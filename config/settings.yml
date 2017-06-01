@@ -1,0 +1,12 @@
+---
+:ems:
+  :ems_foreman:
+    :blacklisted_event_names: []
+    :event_handling:
+      :event_groups:
+:http_proxy:
+  :foreman:
+    :host:
+    :password:
+    :port:
+    :user:
