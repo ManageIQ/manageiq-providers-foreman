@@ -11,8 +11,12 @@ class ManageIQ::Providers::Foreman::ProvisioningManager < ManageIQ::Providers::P
            :with_provider_connection,
            :to => :provider
 
-  has_many :configuration_locations,    :foreign_key => :provisioning_manager_id
-  has_many :configuration_organizations, :foreign_key => :provisioning_manager_id
+  has_many :configuration_locations,      :foreign_key => :provisioning_manager_id
+  has_many :configuration_organizations,  :foreign_key => :provisioning_manager_id
+  has_many :configuration_scripts,        :foreign_key => :manager_id
+  has_many :customization_scripts,        :foreign_key => :manager_id
+  has_many :customization_script_media,   :foreign_key => :manager_id
+  has_many :customization_script_ptables, :foreign_key => :manager_id
 
   def self.ems_type
     @ems_type ||= "foreman_provisioning".freeze
