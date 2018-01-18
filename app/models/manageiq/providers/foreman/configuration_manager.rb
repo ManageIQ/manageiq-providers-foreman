@@ -27,4 +27,8 @@ class ManageIQ::Providers::Foreman::ConfigurationManager < ManageIQ::Providers::
   def image_name
     "foreman_configuration"
   end
+
+  def self.display_name(number = 1)
+    n_('Configuration Manager (Foreman)', 'Configuration Managers (Foreman)', number)
+  end
 end

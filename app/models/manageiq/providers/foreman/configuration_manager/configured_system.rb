@@ -28,6 +28,10 @@ class ManageIQ::Providers::Foreman::ConfigurationManager::ConfiguredSystem < ::C
     true
   end
 
+  def self.display_name(number = 1)
+    n_('Configured System (Foreman)', 'Configured Systems (Foreman)', number)
+  end
+
   private
 
   def connection_source(options = {})
