@@ -1,8 +1,6 @@
 module ManageIQ::Providers
   module Foreman
     class ConfigurationManager::Refresher < ManageIQ::Providers::BaseManager::Refresher
-      include ::EmsRefresh::Refreshers::EmsRefresherMixin
-
       def parse_legacy_inventory(manager)
         manager.with_provider_connection do |connection|
           raw_ems_data = fetch_configuration_inventory(connection)
