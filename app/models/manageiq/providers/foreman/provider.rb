@@ -32,6 +32,7 @@ class ManageIQ::Providers::Foreman::Provider < ::Provider
       :base_url   => base_url,
       :username   => username,
       :password   => password,
+      :timeout    => 100,
       :verify_ssl => verify_ssl
     )
   end
