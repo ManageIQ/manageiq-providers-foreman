@@ -1,0 +1,35 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the ManageIQ_Providers_Foreman package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ManageIQ_Providers_Foreman 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-10-03 14:45+0200\n"
+"PO-Revision-Date: 2018-10-03 14:45+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: ../app/models/manageiq/providers/foreman/configuration_manager.rb:32
+msgid "Configuration Manager (Foreman)"
+msgid_plural "Configuration Managers (Foreman)"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../app/models/manageiq/providers/foreman/configuration_manager/configured_system.rb:32
+msgid "Configured System (Foreman)"
+msgid_plural "Configured Systems (Foreman)"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../lib/manageiq/providers/foreman/engine.rb:8
+msgid "Foreman Provider"
+msgstr ""
