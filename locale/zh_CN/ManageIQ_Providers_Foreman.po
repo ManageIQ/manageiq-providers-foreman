@@ -1,31 +1,33 @@
-# Chinese translations for ManageIQ_Providers_Foreman package.
-# Copyright (C) 2018 THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the ManageIQ_Providers_Foreman package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
-#
+# puger dog <ella.cheng.sh@linguitronics.com>, 2018. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: ManageIQ_Providers_Foreman 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2018-10-03 14:45+0200\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Chinese\n"
-"Language: zh_CN\n"
+"POT-Creation-Date: 2018-10-03 14:45+0200\n"
+"PO-Revision-Date: 2018-10-23 08:01+0000\n"
+"Last-Translator: puger dog <ella.cheng.sh@linguitronics.com>\n"
+"Language-Team: Chinese (Simplified, China)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"\n"
+"Language: zh_Hans_CN\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"X-Generator: Zanata 4.6.2\n"
 
+#: ../app/models/manageiq/providers/foreman/configuration_manager.rb:32
 msgid "Configuration Manager (Foreman)"
 msgid_plural "Configuration Managers (Foreman)"
 msgstr[0] ""
-msgstr[1] ""
+"配置管理器 (Foreman)\n"
+"配置管理器 (Foreman)"
 
+#: ../app/models/manageiq/providers/foreman/configuration_manager/configured_system.rb:32
 msgid "Configured System (Foreman)"
 msgid_plural "Configured Systems (Foreman)"
 msgstr[0] ""
-msgstr[1] ""
+"已配置的系统 (Foreman)\n"
+"已配置的系统 (Foreman)"
 
+#: ../lib/manageiq/providers/foreman/engine.rb:8
 msgid "Foreman Provider"
-msgstr ""
+msgstr "Foreman 供应商"
