@@ -1,7 +1,7 @@
 # manageiq-providers-foreman
 
 [![Gem Version](https://badge.fury.io/rb/manageiq-providers-foreman.svg)](http://badge.fury.io/rb/manageiq-providers-foreman)
-[![Build Status](https://travis-ci.org/ManageIQ/manageiq-providers-foreman.svg)](https://travis-ci.org/ManageIQ/manageiq-providers-foreman)
+[![Build Status](https://travis-ci.org/ManageIQ/manageiq-providers-foreman.svg?branch=master)](https://travis-ci.org/ManageIQ/manageiq-providers-foreman)
 [![Code Climate](https://codeclimate.com/github/ManageIQ/manageiq-providers-foreman.svg)](https://codeclimate.com/github/ManageIQ/manageiq-providers-foreman)
 [![Test Coverage](https://codeclimate.com/github/ManageIQ/manageiq-providers-foreman/badges/coverage.svg)](https://codeclimate.com/github/ManageIQ/manageiq-providers-foreman/coverage)
 [![Dependency Status](https://gemnasium.com/ManageIQ/manageiq-providers-foreman.svg)](https://gemnasium.com/ManageIQ/manageiq-providers-foreman)
