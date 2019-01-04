@@ -1,7 +1,7 @@
 require "foreman_api_client"
 
 describe ManageIQ::Providers::Foreman::Provider do
-  let(:provider) { FactoryGirl.build(:provider_foreman) }
+  let(:provider) { FactoryBot.build(:provider_foreman) }
   let(:attrs) do
     {:base_url => "example.com", :username => "admin", :password => "smartvm", :timeout => 100, :verify_ssl => OpenSSL::SSL::VERIFY_PEER}
   end
@@ -29,22 +29,22 @@ describe ManageIQ::Providers::Foreman::Provider do
 
   describe "#destroy" do
     it "will remove all child objects" do
-      provider = FactoryGirl.create(:provider_foreman, :zone => FactoryGirl.create(:zone))
+      provider = FactoryBot.create(:provider_foreman, :zone => FactoryBot.create(:zone))
 
       provider.configuration_manager.configured_systems = [
-        FactoryGirl.create(:configured_system, :computer_system =>
-          FactoryGirl.create(:computer_system,
-                             :operating_system => FactoryGirl.create(:operating_system),
-                             :hardware         => FactoryGirl.create(:hardware),
+        FactoryBot.create(:configured_system, :computer_system =>
+          FactoryBot.create(:computer_system,
+                             :operating_system => FactoryBot.create(:operating_system),
+                             :hardware         => FactoryBot.create(:hardware),
                             )
                           )
       ]
       provider.configuration_manager.configuration_profiles =
-        [FactoryGirl.create(:configuration_profile)]
+        [FactoryBot.create(:configuration_profile)]
       provider.provisioning_manager.operating_system_flavors =
-        [FactoryGirl.create(:operating_system_flavor)]
+        [FactoryBot.create(:operating_system_flavor)]
       provider.provisioning_manager.customization_scripts =
-        [FactoryGirl.create(:customization_script)]
+        [FactoryBot.create(:customization_script)]
 
       provider.destroy
 
@@ -61,7 +61,7 @@ describe ManageIQ::Providers::Foreman::Provider do
 
   describe "#save" do
     it "will update the name for the manager" do
-      provider = FactoryGirl.create(:provider_foreman, :zone => FactoryGirl.create(:zone), :name => 'Old Name')
+      provider = FactoryBot.create(:provider_foreman, :zone => FactoryBot.create(:zone), :name => 'Old Name')
       expect(provider.configuration_manager.name).to eq('Old Name Configuration Manager')
 
       provider.update(:name => 'New Name')

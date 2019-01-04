@@ -1,8 +1,8 @@
 describe ManageIQ::Providers::Foreman::ConfigurationManager::ConfigurationProfile do
   subject { described_class.new }
 
-  let(:cp1)   { FactoryGirl.create(:configuration_profile_foreman) }
-  let(:cp2)   { FactoryGirl.create(:configuration_profile_foreman, :parent => cp1) }
+  let(:cp1)   { FactoryBot.create(:configuration_profile_foreman) }
+  let(:cp2)   { FactoryBot.create(:configuration_profile_foreman, :parent => cp1) }
 
   describe "#parent" do
     it "has a parent" do

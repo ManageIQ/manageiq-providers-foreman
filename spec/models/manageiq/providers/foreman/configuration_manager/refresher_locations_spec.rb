@@ -10,7 +10,7 @@ describe ManageIQ::Providers::Foreman::ConfigurationManager::Refresher do
   let(:spec_related) { "name like 'ProviderRefreshSpec%'" }
   let(:provider) do
     _guid, _server, zone = EvmSpecHelper.create_guid_miq_server_zone
-    FactoryGirl.create(:provider_foreman,
+    FactoryBot.create(:provider_foreman,
                        :zone       => zone,
                        :url        => "example.com",
                        :verify_ssl => false,
