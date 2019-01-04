@@ -1,16 +1,16 @@
 describe ManageIQ::Providers::Foreman::ConfigurationManager::ConfiguredSystem do
   context "::Placement" do
     context "#available_configuration_profiles" do
-      let(:arch1) { FactoryGirl.create(:configuration_architecture, :name => "i386") }
-      let(:arch2) { FactoryGirl.create(:configuration_architecture, :name => "x86_64") }
-      let(:cl)    { FactoryGirl.create(:configuration_location) }
-      let(:cl2)   { FactoryGirl.create(:configuration_location) }
-      let(:co)    { FactoryGirl.create(:configuration_organization) }
-      let(:co2)   { FactoryGirl.create(:configuration_organization) }
-      let(:cp1)   { FactoryGirl.create(:configuration_profile_foreman) }
-      let(:cp2)   { FactoryGirl.create(:configuration_profile_foreman, :parent => cp1) }
-      let(:cp3)   { FactoryGirl.create(:configuration_profile_foreman, :parent => cp2) }
-      let(:cs)    { FactoryGirl.create(:configured_system_foreman, :configuration_organization => co, :configuration_location => cl) }
+      let(:arch1) { FactoryBot.create(:configuration_architecture, :name => "i386") }
+      let(:arch2) { FactoryBot.create(:configuration_architecture, :name => "x86_64") }
+      let(:cl)    { FactoryBot.create(:configuration_location) }
+      let(:cl2)   { FactoryBot.create(:configuration_location) }
+      let(:co)    { FactoryBot.create(:configuration_organization) }
+      let(:co2)   { FactoryBot.create(:configuration_organization) }
+      let(:cp1)   { FactoryBot.create(:configuration_profile_foreman) }
+      let(:cp2)   { FactoryBot.create(:configuration_profile_foreman, :parent => cp1) }
+      let(:cp3)   { FactoryBot.create(:configuration_profile_foreman, :parent => cp2) }
+      let(:cs)    { FactoryBot.create(:configured_system_foreman, :configuration_organization => co, :configuration_location => cl) }
 
       before { cp1; cp2; cp3 }  # Create ConfigurationProfiles location and/or organization to be assigned by the spec
 

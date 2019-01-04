@@ -1,14 +1,14 @@
 describe ManageIQ::Providers::Foreman::ConfigurationManager::ProvisionWorkflow do
   include Spec::Support::WorkflowHelper
 
-  let(:admin)   { FactoryGirl.create(:user_with_group) }
-  let(:manager) { FactoryGirl.create(:configuration_manager_foreman) }
-  let(:system)  { FactoryGirl.create(:configured_system_foreman, :manager => manager) }
+  let(:admin)   { FactoryBot.create(:user_with_group) }
+  let(:manager) { FactoryBot.create(:configuration_manager_foreman) }
+  let(:system)  { FactoryBot.create(:configured_system_foreman, :manager => manager) }
 
   it "#allowed_configuration_profiles" do
-    cp       = FactoryGirl.build(:configuration_profile, :name => "test", :description => "a/b/c/test")
-    cs       = FactoryGirl.build(:configured_system_foreman)
-    workflow = FactoryGirl.build(:miq_provision_configured_system_foreman_workflow)
+    cp       = FactoryBot.build(:configuration_profile, :name => "test", :description => "a/b/c/test")
+    cs       = FactoryBot.build(:configured_system_foreman)
+    workflow = FactoryBot.build(:miq_provision_configured_system_foreman_workflow)
 
     workflow.instance_variable_set(:@values, :src_configured_system_ids => [cs.id])
     expect(ConfiguredSystem).to receive(:common_configuration_profiles_for_selected_configured_systems).with([cs.id]).and_return([cp])
@@ -17,7 +17,7 @@ describe ManageIQ::Providers::Foreman::ConfigurationManager::ProvisionWorkflow d
   end
 
   describe "#make_request" do
-    let(:alt_user) { FactoryGirl.create(:user_with_group) }
+    let(:alt_user) { FactoryBot.create(:user_with_group) }
 
     it "creates and update a request" do
       EvmSpecHelper.local_miq_server
