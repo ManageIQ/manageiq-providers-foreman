@@ -21,4 +21,8 @@ class ManageIQ::Providers::Foreman::ProvisioningManager < ManageIQ::Providers::P
   def self.description
     @description ||= "Foreman Provisioning".freeze
   end
+
+  def self.supported_for_create?
+    false
+  end
 end
