@@ -3,7 +3,7 @@ require "foreman_api_client"
 describe ManageIQ::Providers::Foreman::Provider do
   let(:provider) { FactoryBot.build(:provider_foreman) }
   let(:attrs) do
-    {:base_url => "example.com", :username => "admin", :password => "smartvm", :timeout => 100, :verify_ssl => OpenSSL::SSL::VERIFY_PEER}
+    {:base_url => provider.url, :username => "admin", :password => "smartvm", :timeout => 100, :verify_ssl => OpenSSL::SSL::VERIFY_PEER}
   end
 
   describe "#connect" do
