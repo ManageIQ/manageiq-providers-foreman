@@ -16,6 +16,12 @@ class ManageIQ::Providers::Foreman::ConfigurationManager < ManageIQ::Providers::
            :with_provider_connection,
            :to => :provider
 
+  class << self
+    delegate :params_for_create,
+             :verify_credentials,
+             :to => ManageIQ::Providers::Foreman::Provider
+  end
+
   def self.ems_type
     @ems_type ||= "foreman_configuration".freeze
   end
