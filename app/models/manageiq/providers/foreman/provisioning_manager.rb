@@ -11,6 +11,12 @@ class ManageIQ::Providers::Foreman::ProvisioningManager < ManageIQ::Providers::P
            :with_provider_connection,
            :to => :provider
 
+  class << self
+    delegate :params_for_create,
+             :verify_credentials,
+             :to => ManageIQ::Providers::Foreman::Provider
+  end
+
   has_many :configuration_locations,    :foreign_key => :provisioning_manager_id
   has_many :configuration_organizations, :foreign_key => :provisioning_manager_id
 

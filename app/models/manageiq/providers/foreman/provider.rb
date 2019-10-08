@@ -25,13 +25,70 @@ class ManageIQ::Providers::Foreman::Provider < ::Provider
   validates :name, :presence => true, :uniqueness => true
   validates :url,  :presence => true
 
+  def self.description
+    @description ||= "Foreman".freeze
+  end
+
+  def self.params_for_create
+    @params_for_create ||= {
+      :title  => "Configure #{description}",
+      :fields => [
+        {
+          :component  => "text-field",
+          :name       => "endpoints.default.base_url",
+          :label      => "URL",
+          :isRequired => true,
+          :validate   => [{:type => "required-validator"}]
+        },
+        {
+          :component  => "text-field",
+          :name       => "endpoints.default.username",
+          :label      => "User",
+          :isRequired => true,
+          :validate   => [{:type => "required-validator"}]
+        },
+        {
+          :component  => "text-field",
+          :name       => "endpoints.default.password",
+          :label      => "Password",
+          :type       => "password",
+          :isRequired => true,
+          :validate   => [{:type => "required-validator"}]
+        },
+        {
+          :component => "checkbox",
+          :name      => "endpoints.default.verify_ssl",
+          :label     => "Verify SSL"
+        }
+      ]
+    }.freeze
+  end
+
+  # Verify Credentials
+  # args: {
+  #  "endpoints" => {
+  #    "default" => {
+  #      "base_url" => nil,
+  #      "username" => nil,
+  #      "password" => nil,
+  #      "verify_ssl" => nil
+  #    }
+  #  }
+  # }
+  def self.verify_credentials(args)
+    default_endpoint = args.dig("endpoints", "default")
+    base_url, username, password, verify_ssl = default_endpoint&.values_at("base_url", "username", "password", "verify_ssl")
+    verify_ssl = verify_ssl ? OpenSSL::SSL::VERIFY_PEER : OpenSSL::SSL::VERIFY_NONE
+    !!raw_connect(base_url, username, password, verify_ssl).verify?
+  end
+
   def self.raw_connect(base_url, username, password, verify_ssl)
     require 'foreman_api_client'
     ForemanApiClient.logger ||= $log
     ForemanApiClient::Connection.new(
       :base_url   => base_url,
       :username   => username,
-      :password   => password,
+      :password   => MiqPassword.try_decrypt(password),
       :timeout    => 100,
       :verify_ssl => verify_ssl
     )
