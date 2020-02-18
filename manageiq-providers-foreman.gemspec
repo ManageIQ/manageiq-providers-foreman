@@ -15,4 +15,6 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "codeclimate-test-reporter", "~> 1.0.0"
   s.add_development_dependency "simplecov"
+
+  s.add_runtime_dependency "foreman_api_client", "~>1.0"
 end
