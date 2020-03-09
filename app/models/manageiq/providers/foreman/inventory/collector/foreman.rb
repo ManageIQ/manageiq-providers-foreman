@@ -20,11 +20,11 @@ class ManageIQ::Providers::Foreman::Inventory::Collector::Foreman < ManageIQ::Pr
   end
 
   def locations
-    inventory[:locations] || tax_refs
+    inventory[:locations] || default_taxonamy_refs
   end
 
   def organizations
-    inventory[:organizations] || tax_refs
+    inventory[:organizations] || default_taxonamy_refs
   end
 
   def architectures
@@ -84,7 +84,7 @@ class ManageIQ::Providers::Foreman::Inventory::Collector::Foreman < ManageIQ::Pr
   end
 
   # default taxonomy reference (locations and organizations)
-  def tax_refs
+  def default_taxonamy_refs
     [{"id" => 0, "name" => "Default", "title" => "Default"}]
   end
 end
