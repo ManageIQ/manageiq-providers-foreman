@@ -32,7 +32,7 @@ class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Provi
   end
 
   def configuration_profiles
-    collector.hostgroups.each do |hostgroup|
+    configuration_profiles = collector.hostgroups.map do |hostgroup|
       persister.configuration_profiles.build(
         :manager_ref => hostgroup["id"].to_s,
         :parent_ref  => (hostgroup["ancestry"] || "").split("/").last.presence,
@@ -43,6 +43,20 @@ class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Provi
         :direct_customization_script_ptable => persister.customization_script_ptables.lazy_find(hostgroup["ptable_id"])
       )
     end
+
+    configuration_profiles.each do |profile|
+      ancestor_values = family_tree(configuration_profiles, profile).map do |hash|
+        {
+          :operating_system_flavor     => hash.direct_operating_system_flavor,
+          :customization_script_medium => hash.direct_customization_script_medium,
+          :customization_script_ptable => hash.direct_customization_script_ptable
+        }
+      end
+
+      rollup(profile, ancestor_values)
+    end
+
+    configuration_profiles
   end
 
   def configured_systems
@@ -132,6 +146,25 @@ class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Provi
         :manager_ref => realm["id"].to_s,
         :name        => realm["name"],
       )
+    end
+  end
+
+  # given an array of hashes, squash the values together, last value taking precidence
+  def rollup(target, records)
+    records.each do |record|
+      target.data.merge!(record.select { |_n, v| !v.nil? && v != "" })
+    end
+    target
+  end
+
+  # walk collection returning [ancestor, grand parent, parent, child_record]
+  def family_tree(collection, record)
+    ret = []
+    loop do
+      ret << record
+      parent_ref = record[:parent_ref]
+      return ret.reverse unless parent_ref
+      record = collection.detect { |r| r[:manager_ref] == parent_ref }
     end
   end
 end
