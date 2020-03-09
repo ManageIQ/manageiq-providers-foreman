@@ -1,8 +1,9 @@
 class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Providers::Foreman::Inventory::Parser
   def parse
     customization_scripts
-    configuration_profiles
-    configured_systems
+
+    persister_profiles = configuration_profiles
+    configured_systems(persister_profiles)
     operating_system_flavors
     configuration_locations
     configuration_organizations
@@ -33,9 +34,12 @@ class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Provi
 
   def configuration_profiles
     configuration_profiles = collector.hostgroups.map do |hostgroup|
+      parent_ref = hostgroup["ancestry"]&.split("/")&.last&.presence
+      parent     = persister.configuration_profiles.lazy_find(parent_ref) if parent_ref
+
       persister.configuration_profiles.build(
         :manager_ref => hostgroup["id"].to_s,
-        :parent_ref  => (hostgroup["ancestry"] || "").split("/").last.presence,
+        :parent      => parent,
         :name        => hostgroup["name"],
         :description => hostgroup["title"],
         :direct_operating_system_flavor     => persister.operating_system_flavors.lazy_find(hostgroup["operatingsystem_id"]),
@@ -59,8 +63,12 @@ class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Provi
     configuration_profiles
   end
 
-  def configured_systems
-    collector.hosts.each do |host|
+  def configured_systems(persister_profiles)
+    persister_profiles_by_ref = persister_profiles.index_by do |profile|
+      profile.data[:manager_ref]
+    end
+
+    configured_systems = collector.hosts.map do |host|
       persister.configured_systems.build(
         :manager_ref                        => host["id"].to_s,
         :hostname                           => host["name"],
@@ -72,8 +80,22 @@ class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Provi
         :direct_operating_system_flavor     => persister.operating_system_flavors.lazy_find(host["operatingsystem_id"]),
         :direct_customization_script_medium => persister.customization_script_media.lazy_find(host["medium_id"]),
         :direct_customization_script_ptable => persister.customization_script_ptables.lazy_find(host["ptable_id"]),
+        :configuration_profile              => persister_profiles_by_ref[host["hostgroup_id"].to_s]
       )
     end
+
+    configured_systems.each do |system|
+      parent = system.configuration_profile || {}
+
+      system.data.merge!(
+        :operating_system_flavor     => system.direct_operating_system_flavor.presence || parent.operating_system_flavor.presence,
+        :customization_script_medium => system.direct_customization_script_medium.presence || parent.customization_script_medium.presence,
+        :customization_script_ptable => system.direct_customization_script_ptable.presence || parent.customization_script_ptable_id.presence,
+        #:configuration_tag_ids          => tag_id_lookup(indexes, rollup({}, configuration_tag_hashes)),
+      )
+    end
+
+    configured_systems
   end
 
   def operating_system_flavors
@@ -162,7 +184,7 @@ class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Provi
     ret = []
     loop do
       ret << record
-      parent_ref = record[:parent_ref]
+      parent_ref = record.parent&.stringified_reference
       return ret.reverse unless parent_ref
       record = collection.detect { |r| r[:manager_ref] == parent_ref }
     end
