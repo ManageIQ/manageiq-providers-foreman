@@ -45,6 +45,7 @@ class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Provi
         :parent                             => parent,
         :name                               => hostgroup["name"],
         :description                        => hostgroup["title"],
+        :parent_ref                         => parent_ref,
         :direct_configuration_tags          => tag_id_lookup(hostgroup),
         :configuration_tags_hash            => tag_hash(hostgroup),
         :direct_operating_system_flavor     => persister.operating_system_flavors.lazy_find(hostgroup["operatingsystem_id"]),
