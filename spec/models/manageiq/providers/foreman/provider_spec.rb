@@ -6,6 +6,12 @@ describe ManageIQ::Providers::Foreman::Provider do
     {:base_url => provider.url, :username => "admin", :password => "smartvm", :timeout => 100, :verify_ssl => OpenSSL::SSL::VERIFY_PEER}
   end
 
+  before do
+    MiqRegion.seed
+    Zone.seed
+    EvmSpecHelper.local_miq_server
+  end
+
   describe "#connect" do
     it "with no port" do
       expect(ForemanApiClient::Connection).to receive(:new).with(attrs)
@@ -67,6 +73,30 @@ describe ManageIQ::Providers::Foreman::Provider do
       provider.update(:name => 'New Name')
       expect(provider.configuration_manager.name).to eq('New Name Configuration Manager')
       expect(provider.provisioning_manager.name).to eq('New Name Provisioning Manager')
+    end
+  end
+
+  context "ensure_managers callback" do
+    it "automatically creates a provisioning and configuration manager if none is provided" do
+      provider = FactoryBot.create(:provider_foreman)
+      expect(provider.provisioning_manager).to be_kind_of(ManageIQ::Providers::Foreman::ProvisioningManager)
+      expect(provider.configuration_manager).to be_kind_of(ManageIQ::Providers::Foreman::ConfigurationManager)
+    end
+
+    it "sets the provisioning and configuration manager to disabled if created in the maintenance zone" do
+      provider = FactoryBot.create(:provider_foreman, :zone => Zone.maintenance_zone)
+      expect(provider.provisioning_manager.enabled).to eql(false)
+      expect(provider.configuration_manager.enabled).to eql(false)
+      expect(provider.provisioning_manager.zone).to eql(Zone.maintenance_zone)
+      expect(provider.configuration_manager.zone).to eql(Zone.maintenance_zone)
+    end
+
+    it "sets the provisioning and configuration manager to enabled if not created in the maintenance zone" do
+      provider = FactoryBot.create(:provider_foreman, :zone => Zone.default_zone)
+      expect(provider.provisioning_manager.enabled).to eql(true)
+      expect(provider.configuration_manager.enabled).to eql(true)
+      expect(provider.provisioning_manager.zone).to eql(Zone.default_zone)
+      expect(provider.configuration_manager.zone).to eql(Zone.default_zone)
     end
   end
 end
