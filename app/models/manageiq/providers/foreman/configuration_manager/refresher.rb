@@ -10,8 +10,12 @@ module ManageIQ::Providers
       end
 
       def save_inventory(manager, target, hashes)
-        EmsRefresh.save_configuration_manager_inventory(manager, hashes, target)
-        EmsRefresh.queue_refresh(manager.provider.provisioning_manager) if hashes[:needs_provisioning_refresh]
+        if manager.inventory_object_refresh?
+          super
+        else
+          EmsRefresh.save_configuration_manager_inventory(manager, hashes, target)
+          EmsRefresh.queue_refresh(manager.provider.provisioning_manager) if hashes[:needs_provisioning_refresh]
+        end
       end
 
       private

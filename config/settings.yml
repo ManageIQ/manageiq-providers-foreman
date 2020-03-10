@@ -4,6 +4,11 @@
     :blacklisted_event_names: []
     :event_handling:
       :event_groups:
+:ems_refresh:
+  :foreman_configuration:
+    :inventory_object_refresh: false
+  :foreman_provisioning:
+    :inventory_object_refresh: false
 :http_proxy:
   :foreman:
     :host:
