@@ -85,18 +85,18 @@ describe ManageIQ::Providers::Foreman::Provider do
 
     it "sets the provisioning and configuration manager to disabled if created in the maintenance zone" do
       provider = FactoryBot.create(:provider_foreman, :zone => Zone.maintenance_zone)
-      expect(provider.provisioning_manager.enabled).to eql(false)
-      expect(provider.configuration_manager.enabled).to eql(false)
-      expect(provider.provisioning_manager.zone).to eql(Zone.maintenance_zone)
-      expect(provider.configuration_manager.zone).to eql(Zone.maintenance_zone)
+      expect(provider.provisioning_manager.enabled).to eq(false)
+      expect(provider.configuration_manager.enabled).to eq(false)
+      expect(provider.provisioning_manager.zone).to eq(Zone.maintenance_zone)
+      expect(provider.configuration_manager.zone).to eq(Zone.maintenance_zone)
     end
 
     it "sets the provisioning and configuration manager to enabled if not created in the maintenance zone" do
       provider = FactoryBot.create(:provider_foreman, :zone => Zone.default_zone)
-      expect(provider.provisioning_manager.enabled).to eql(true)
-      expect(provider.configuration_manager.enabled).to eql(true)
-      expect(provider.provisioning_manager.zone).to eql(Zone.default_zone)
-      expect(provider.configuration_manager.zone).to eql(Zone.default_zone)
+      expect(provider.provisioning_manager.enabled).to eq(true)
+      expect(provider.configuration_manager.enabled).to eq(true)
+      expect(provider.provisioning_manager.zone).to eq(Zone.default_zone)
+      expect(provider.configuration_manager.zone).to eq(Zone.default_zone)
     end
   end
 end
