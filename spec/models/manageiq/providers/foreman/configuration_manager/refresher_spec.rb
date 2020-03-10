@@ -18,11 +18,7 @@ describe ManageIQ::Providers::Foreman::ConfigurationManager::Refresher do
         let(:spec_related) { "name like 'ProviderRefreshSpec%'" }
         let(:provider) do
           _guid, _server, zone = EvmSpecHelper.create_guid_miq_server_zone
-          FactoryBot.create(:provider_foreman,
-                             :zone       => zone,
-                             :url        => "example.com",
-                             :verify_ssl => false,
-                            )
+          FactoryBot.create(:provider_foreman, :zone => zone, :url => "example.com", :verify_ssl => false)
         end
 
         let(:provisioning_manager)  { provider.provisioning_manager }
@@ -150,7 +146,7 @@ describe ManageIQ::Providers::Foreman::ConfigurationManager::Refresher do
             :direct_customization_script_medium => nil,           # inherited from parent
             :direct_customization_script_ptable => mine(ptables), # declared
             :direct_operating_system_flavor     => nil,           # inherited from parent
-            :operating_system_flavor            => mine(osfs),    # inherited from parent
+            :operating_system_flavor            => mine(osfs)     # inherited from parent
           )
           expect(child.configuration_locations).to match_array([default_location])
           expect(child.configuration_organizations).to match_array([default_organization])
@@ -170,12 +166,12 @@ describe ManageIQ::Providers::Foreman::ConfigurationManager::Refresher do
             :configuration_compute_profile      => nil,
             :configuration_domain               => nil,
             :configuration_realm                => nil,
-            :customization_script_medium        => mine(media),   # declared
-            :customization_script_ptable        => nil,           # blank
-            :direct_customization_script_medium => mine(media),   # declared
-            :direct_customization_script_ptable => nil,           # blank
-            :direct_operating_system_flavor     => mine(osfs),    # declared
-            :operating_system_flavor            => mine(osfs),    # declared
+            :customization_script_medium        => mine(media), # declared
+            :customization_script_ptable        => nil,         # blank
+            :direct_customization_script_medium => mine(media), # declared
+            :direct_customization_script_ptable => nil,         # blank
+            :direct_operating_system_flavor     => mine(osfs),  # declared
+            :operating_system_flavor            => mine(osfs)   # declared
           )
           expect(parent.configuration_locations).to match_array([default_location])
           expect(parent.configuration_organizations).to match_array([default_organization])
@@ -205,7 +201,7 @@ describe ManageIQ::Providers::Foreman::ConfigurationManager::Refresher do
             :direct_customization_script_medium => mine(media),   # note: values currently copied to host
             :direct_customization_script_ptable => mine(ptables), # note: values currently copied to host
             :direct_operating_system_flavor     => mine(osfs),    # note: values currently copied to host
-            :operating_system_flavor            => mine(osfs),    # inherited from parent
+            :operating_system_flavor            => mine(osfs)     # inherited from parent
           )
           expect(system.configuration_tags).to match_array([my_arch, my_env, domains.first])
         end

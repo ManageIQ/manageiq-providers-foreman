@@ -90,7 +90,7 @@ class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Provi
         :direct_customization_script_ptable => persister.customization_script_ptables.lazy_find(host["ptable_id"]),
         :configuration_profile              => persister_profiles_by_ref[host["hostgroup_id"].to_s],
         :configuration_location             => persister.configuration_locations.lazy_find(location_id.to_s),
-        :configuration_organization         => persister.configuration_organizations.lazy_find(organization_id.to_s),
+        :configuration_organization         => persister.configuration_organizations.lazy_find(organization_id.to_s)
       )
     end
 
@@ -100,7 +100,7 @@ class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Provi
       system.data.merge!(
         :operating_system_flavor     => system.direct_operating_system_flavor.presence || parent.operating_system_flavor.presence,
         :customization_script_medium => system.direct_customization_script_medium.presence || parent.customization_script_medium.presence,
-        :customization_script_ptable => system.direct_customization_script_ptable.presence || parent.customization_script_ptable_id.presence,
+        :customization_script_ptable => system.direct_customization_script_ptable.presence || parent.customization_script_ptable_id.presence
         #:configuration_tag_ids          => tag_id_lookup(indexes, rollup({}, configuration_tag_hashes)),
       )
     end
@@ -122,7 +122,7 @@ class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Provi
     collector.locations.each do |location|
       persister.configuration_locations.build(
         :manager_ref => location["id"].to_s,
-        :name        => location["name"],
+        :name        => location["name"]
       )
     end
   end
@@ -131,7 +131,7 @@ class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Provi
     collector.organizations.each do |org|
       persister.configuration_organizations.build(
         :manager_ref => org["id"].to_s,
-        :name        => org["name"],
+        :name        => org["name"]
       )
     end
   end
@@ -140,7 +140,7 @@ class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Provi
     collector.architectures.each do |arch|
       persister.configuration_architectures.build(
         :manager_ref => arch["id"].to_s,
-        :name        => arch["name"],
+        :name        => arch["name"]
       )
     end
   end
@@ -149,7 +149,7 @@ class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Provi
     collector.compute_profiles.each do |profile|
       persister.configuration_compute_profiles.build(
         :manager_ref => profile["id"].to_s,
-        :name        => profile["name"],
+        :name        => profile["name"]
       )
     end
   end
@@ -158,7 +158,7 @@ class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Provi
     collector.domains.each do |domain|
       persister.configuration_domains.build(
         :manager_ref => domain["id"].to_s,
-        :name        => domain["name"],
+        :name        => domain["name"]
       )
     end
   end
@@ -167,7 +167,7 @@ class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Provi
     collector.environments.each do |env|
       persister.configuration_environments.build(
         :manager_ref => env["id"].to_s,
-        :name        => env["name"],
+        :name        => env["name"]
       )
     end
   end
@@ -176,7 +176,7 @@ class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Provi
     collector.realms.each do |realm|
       persister.configuration_realms.build(
         :manager_ref => realm["id"].to_s,
-        :name        => realm["name"],
+        :name        => realm["name"]
       )
     end
   end
@@ -196,6 +196,7 @@ class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Provi
       ret << record
       parent_ref = record.parent&.stringified_reference
       return ret.reverse unless parent_ref
+
       record = collection.detect { |r| r[:manager_ref] == parent_ref }
     end
   end

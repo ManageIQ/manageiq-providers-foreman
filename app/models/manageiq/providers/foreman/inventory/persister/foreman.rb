@@ -29,9 +29,7 @@ class ManageIQ::Providers::Foreman::Inventory::Persister::Foreman < ManageIQ::Pr
     add_collection(provisioning, collection) do |builder|
       builder.add_properties(:parent => manager.provider.provisioning_manager)
       builder.add_default_values(
-        default_value_key => ->(persister) do
-          persister.manager.provider.provisioning_manager.id
-        end
+        default_value_key => ->(persister) { persister.manager.provider.provisioning_manager.id }
       )
     end
   end
