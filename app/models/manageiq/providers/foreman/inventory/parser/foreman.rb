@@ -45,6 +45,8 @@ class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Provi
         :parent                             => parent,
         :name                               => hostgroup["name"],
         :description                        => hostgroup["title"],
+        :direct_configuration_tags          => tag_id_lookup(hostgroup),
+        :configuration_tags_hash            => tag_hash(hostgroup),
         :direct_operating_system_flavor     => persister.operating_system_flavors.lazy_find(hostgroup["operatingsystem_id"]),
         :direct_customization_script_medium => persister.customization_script_media.lazy_find(hostgroup["medium_id"]),
         :direct_customization_script_ptable => persister.customization_script_ptables.lazy_find(hostgroup["ptable_id"]),
@@ -62,7 +64,13 @@ class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Provi
         }
       end
 
-      rollup(profile, ancestor_values)
+      rollup(profile.data, ancestor_values)
+
+      configuration_tag_hashes = family_tree(configuration_profiles, profile).map do |hash|
+        hash.data[:configuration_tags_hash]
+      end
+
+      profile.configuration_tags = tag_id_lookup(rollup({}, configuration_tag_hashes))
     end
 
     configuration_profiles
@@ -90,18 +98,25 @@ class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Provi
         :direct_customization_script_ptable => persister.customization_script_ptables.lazy_find(host["ptable_id"]),
         :configuration_profile              => persister_profiles_by_ref[host["hostgroup_id"].to_s],
         :configuration_location             => persister.configuration_locations.lazy_find(location_id.to_s),
-        :configuration_organization         => persister.configuration_organizations.lazy_find(organization_id.to_s)
+        :configuration_organization         => persister.configuration_organizations.lazy_find(organization_id.to_s),
+        :configuration_tags_hash            => tag_hash(host),
+        :direct_configuration_tags          => [persister.configuration_architectures.lazy_find(host["architecture_id"].to_s)]
       )
     end
 
     configured_systems.each do |system|
-      parent = system.configuration_profile || {}
+      parent = system.configuration_profile
 
+      configuration_tag_hashes = family_tree(configured_systems, system).map do |hash|
+        hash.data[:configuration_tags_hash]
+      end
+
+      configuration_tags = tag_id_lookup(rollup({}, configuration_tag_hashes))
       system.data.merge!(
-        :operating_system_flavor     => system.direct_operating_system_flavor.presence || parent.operating_system_flavor.presence,
-        :customization_script_medium => system.direct_customization_script_medium.presence || parent.customization_script_medium.presence,
-        :customization_script_ptable => system.direct_customization_script_ptable.presence || parent.customization_script_ptable_id.presence
-        #:configuration_tag_ids          => tag_id_lookup(indexes, rollup({}, configuration_tag_hashes)),
+        :operating_system_flavor     => system.direct_operating_system_flavor.presence     || parent&.operating_system_flavor.presence,
+        :customization_script_medium => system.direct_customization_script_medium.presence || parent&.customization_script_medium.presence,
+        :customization_script_ptable => system.direct_customization_script_ptable.presence || parent&.customization_script_ptable_id.presence,
+        :configuration_tags          => configuration_tags
       )
     end
 
@@ -193,9 +208,25 @@ class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Provi
   # given an array of hashes, squash the values together, last value taking precidence
   def rollup(target, records)
     records.each do |record|
-      target.data.merge!(record.select { |_n, v| !v.nil? && v != "" })
+      target.merge!(record.select { |_n, v| !v.nil? && v != "" })
     end
     target
+  end
+
+  # lookup all the configuration_tags and return ids (from the indexes)
+  def tag_id_lookup(record)
+    tag_ids = []
+    tag_ids << persister.configuration_architectures.lazy_find(record["architecture_id"].to_s) if record["architecture_id"]
+    tag_ids << persister.configuration_compute_profiles.lazy_find(record["compute_profile_id"].to_s) if record["compute_profile_id"]
+    tag_ids << persister.configuration_domains.lazy_find(record["domain_id"].to_s) if record["domain_id"]
+    tag_ids << persister.configuration_environments.lazy_find(record["environment_id"].to_s) if record["environment_id"]
+    tag_ids << persister.configuration_realms.lazy_find(record["realm_id"].to_s) if record["realm_id"]
+    tag_ids
+  end
+
+  # produce temporary hash of all the tags
+  def tag_hash(record)
+    record.slice("architecture_id", "compute_profile_id", "domain_id", "environment_id", "realm_id").delete_if { |_n, v| v.nil? }
   end
 
   # walk collection returning [ancestor, grand parent, parent, child_record]
@@ -203,7 +234,7 @@ class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Provi
     ret = []
     loop do
       ret << record
-      parent_ref = record.parent&.stringified_reference
+      parent_ref = record.try(:parent)&.stringified_reference
       return ret.reverse unless parent_ref
 
       record = collection.detect { |r| r[:manager_ref] == parent_ref }
