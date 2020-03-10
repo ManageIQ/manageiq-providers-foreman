@@ -4,7 +4,6 @@ class ManageIQ::Providers::Foreman::ConfigurationManager < ManageIQ::Providers::
   require_nested :ProvisionTask
   require_nested :ProvisionWorkflow
   require_nested :Refresher
-  require_nested :RefreshParser
   require_nested :RefreshWorker
 
   include ProcessTasksMixin
@@ -28,6 +27,10 @@ class ManageIQ::Providers::Foreman::ConfigurationManager < ManageIQ::Providers::
 
   def self.description
     @description ||= "Foreman Configuration".freeze
+  end
+
+  def inventory_object_refresh?
+    true
   end
 
   def image_name

@@ -1,6 +1,5 @@
 class ManageIQ::Providers::Foreman::ProvisioningManager < ManageIQ::Providers::ProvisioningManager
   require_nested :Refresher
-  require_nested :RefreshParser
 
   delegate :authentication_check,
            :authentication_status,
@@ -29,5 +28,9 @@ class ManageIQ::Providers::Foreman::ProvisioningManager < ManageIQ::Providers::P
 
   def self.supported_for_create?
     false
+  end
+
+  def inventory_object_refresh?
+    true
   end
 end
