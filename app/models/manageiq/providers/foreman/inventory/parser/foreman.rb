@@ -145,18 +145,30 @@ class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Provi
 
   def configuration_locations
     collector.locations.each do |location|
+      parent_ref = derive_parent_ref(location, collector.locations)
+      parent     = persister.configuration_locations.lazy_find(parent_ref) if parent_ref
+
       persister.configuration_locations.build(
         :manager_ref => location["id"].to_s,
-        :name        => location["name"]
+        :name        => location["name"],
+        :title       => location["title"],
+        :parent_ref  => parent_ref,
+        :parent      => parent
       )
     end
   end
 
   def configuration_organizations
     collector.organizations.each do |org|
+      parent_ref = derive_parent_ref(org, collector.organizations)
+      parent     = persister.configuration_organizations.lazy_find(parent_ref) if parent_ref
+
       persister.configuration_organizations.build(
         :manager_ref => org["id"].to_s,
-        :name        => org["name"]
+        :name        => org["name"],
+        :title       => org["title"],
+        :parent_ref  => parent_ref,
+        :parent      => parent
       )
     end
   end
@@ -240,5 +252,10 @@ class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Provi
 
       record = collection.detect { |r| r[:manager_ref] == parent_ref }
     end
+  end
+
+  def derive_parent_ref(rec, collection)
+    parent_title = (rec["title"] || "").sub(/\/?#{rec["name"]}/, "").presence
+    collection.detect { |c| c["title"].to_s == parent_title }.try(:[], "id")&.to_s if parent_title
   end
 end
