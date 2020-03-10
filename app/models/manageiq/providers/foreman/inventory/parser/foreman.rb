@@ -37,14 +37,19 @@ class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Provi
       parent_ref = hostgroup["ancestry"]&.split("/")&.last&.presence
       parent     = persister.configuration_profiles.lazy_find(parent_ref) if parent_ref
 
+      configuration_locations     = hostgroup["locations"].to_a.map { |loc| persister.configuration_locations.lazy_find(loc["id"].to_s) }
+      configuration_organizations = hostgroup["organizations"].to_a.map { |org| persister.configuration_organizations.lazy_find(org["id"].to_s) }
+
       persister.configuration_profiles.build(
-        :manager_ref => hostgroup["id"].to_s,
-        :parent      => parent,
-        :name        => hostgroup["name"],
-        :description => hostgroup["title"],
+        :manager_ref                        => hostgroup["id"].to_s,
+        :parent                             => parent,
+        :name                               => hostgroup["name"],
+        :description                        => hostgroup["title"],
         :direct_operating_system_flavor     => persister.operating_system_flavors.lazy_find(hostgroup["operatingsystem_id"]),
         :direct_customization_script_medium => persister.customization_script_media.lazy_find(hostgroup["medium_id"]),
-        :direct_customization_script_ptable => persister.customization_script_ptables.lazy_find(hostgroup["ptable_id"])
+        :direct_customization_script_ptable => persister.customization_script_ptables.lazy_find(hostgroup["ptable_id"]),
+        :configuration_locations            => configuration_locations,
+        :configuration_organizations        => configuration_organizations
       )
     end
 
@@ -69,6 +74,9 @@ class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Provi
     end
 
     configured_systems = collector.hosts.map do |host|
+      location_id = host["location_id"] || 0
+      organization_id = host["organization_id"] || 0
+
       persister.configured_systems.build(
         :manager_ref                        => host["id"].to_s,
         :hostname                           => host["name"],
@@ -80,7 +88,9 @@ class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Provi
         :direct_operating_system_flavor     => persister.operating_system_flavors.lazy_find(host["operatingsystem_id"]),
         :direct_customization_script_medium => persister.customization_script_media.lazy_find(host["medium_id"]),
         :direct_customization_script_ptable => persister.customization_script_ptables.lazy_find(host["ptable_id"]),
-        :configuration_profile              => persister_profiles_by_ref[host["hostgroup_id"].to_s]
+        :configuration_profile              => persister_profiles_by_ref[host["hostgroup_id"].to_s],
+        :configuration_location             => persister.configuration_locations.lazy_find(location_id.to_s),
+        :configuration_organization         => persister.configuration_organizations.lazy_find(organization_id.to_s),
       )
     end
 

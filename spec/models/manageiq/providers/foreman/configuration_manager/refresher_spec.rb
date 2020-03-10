@@ -144,8 +144,6 @@ describe ManageIQ::Providers::Foreman::ConfigurationManager::Refresher do
             :configuration_environment          => my_env,
             :configuration_compute_profile      => nil,
             :configuration_domain               => nil,
-            :configuration_locations            => [default_location],
-            :configuration_organizations        => [default_organization],
             :configuration_realm                => nil,
             :customization_script_medium        => mine(media),   # inherited from parent
             :customization_script_ptable        => mine(ptables), # declared
@@ -154,6 +152,8 @@ describe ManageIQ::Providers::Foreman::ConfigurationManager::Refresher do
             :direct_operating_system_flavor     => nil,           # inherited from parent
             :operating_system_flavor            => mine(osfs),    # inherited from parent
           )
+          expect(child.configuration_locations).to match_array([default_location])
+          expect(child.configuration_organizations).to match_array([default_organization])
           expect(child.configuration_tags).to match_array([my_arch, my_env])
         end
 
@@ -169,8 +169,6 @@ describe ManageIQ::Providers::Foreman::ConfigurationManager::Refresher do
             :configuration_environment          => my_env,
             :configuration_compute_profile      => nil,
             :configuration_domain               => nil,
-            :configuration_locations            => [default_location],
-            :configuration_organizations        => [default_organization],
             :configuration_realm                => nil,
             :customization_script_medium        => mine(media),   # declared
             :customization_script_ptable        => nil,           # blank
@@ -179,6 +177,8 @@ describe ManageIQ::Providers::Foreman::ConfigurationManager::Refresher do
             :direct_operating_system_flavor     => mine(osfs),    # declared
             :operating_system_flavor            => mine(osfs),    # declared
           )
+          expect(parent.configuration_locations).to match_array([default_location])
+          expect(parent.configuration_organizations).to match_array([default_organization])
           expect(parent.configuration_tags).to match_array([my_arch, my_env])
         end
 

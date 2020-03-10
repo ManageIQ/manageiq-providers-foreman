@@ -67,6 +67,12 @@ class ManageIQ::Providers::Foreman::Inventory::Collector::Foreman < ManageIQ::Pr
        (host.key?("organization_id") && !hostgroup.key?("organizations")))
       hostgroups = connection.load_details(hostgroups, :hostgroups)
     end
+
+    hostgroups.each do |hg|
+      hg["locations"] ||= default_taxonamy_refs
+      hg["organizations"] ||= default_taxonamy_refs
+    end
+
     {
       :hosts             => hosts,
       :hostgroups        => hostgroups,
