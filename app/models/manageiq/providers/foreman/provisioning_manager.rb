@@ -1,7 +1,6 @@
 class ManageIQ::Providers::Foreman::ProvisioningManager < ManageIQ::Providers::ProvisioningManager
   require_nested :Refresher
   require_nested :RefreshParser
-  require_nested :RefreshWorker
 
   delegate :authentication_check,
            :authentication_status,
