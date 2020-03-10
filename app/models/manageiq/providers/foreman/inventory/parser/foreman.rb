@@ -110,10 +110,19 @@ class ManageIQ::Providers::Foreman::Inventory::Parser::Foreman < ManageIQ::Provi
 
   def operating_system_flavors
     collector.operating_systems.each do |os|
+      customization_scripts = os["media"].to_a.map do |media|
+        persister.customization_script_media.lazy_find(media["id"].to_s)
+      end
+
+      customization_scripts += os["ptables"].to_a.map do |ptable|
+        persister.customization_script_ptables.lazy_find(ptable["id"].to_s)
+      end
+
       persister.operating_system_flavors.build(
-        :manager_ref => os["id"].to_s,
-        :name        => os["fullname"],
-        :description => os["description"]
+        :manager_ref           => os["id"].to_s,
+        :name                  => os["fullname"],
+        :description           => os["description"],
+        :customization_scripts => customization_scripts
       )
     end
   end
