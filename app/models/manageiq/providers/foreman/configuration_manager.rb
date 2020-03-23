@@ -29,10 +29,6 @@ class ManageIQ::Providers::Foreman::ConfigurationManager < ManageIQ::Providers::
     @description ||= "Foreman Configuration".freeze
   end
 
-  def inventory_object_refresh?
-    true
-  end
-
   def image_name
     "foreman_configuration"
   end

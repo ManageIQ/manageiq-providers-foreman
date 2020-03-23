@@ -29,8 +29,4 @@ class ManageIQ::Providers::Foreman::ProvisioningManager < ManageIQ::Providers::P
   def self.supported_for_create?
     false
   end
-
-  def inventory_object_refresh?
-    true
-  end
 end
