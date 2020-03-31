@@ -1,7 +1,7 @@
 describe ManageIQ::Providers::Foreman::ConfigurationManager do
-  let(:provider) { FactoryBot.build(:provider_foreman) }
+  let(:provider) { configuration_manager.provider }
   let(:configuration_manager) do
-    FactoryBot.build(:configuration_manager_foreman, :provider => provider)
+    FactoryBot.build(:configuration_manager_foreman)
   end
 
   describe "#connect" do

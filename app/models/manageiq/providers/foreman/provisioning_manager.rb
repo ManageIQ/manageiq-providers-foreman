@@ -4,7 +4,9 @@ class ManageIQ::Providers::Foreman::ProvisioningManager < ManageIQ::Providers::P
   delegate :authentication_check,
            :authentication_status,
            :authentication_status_ok?,
+           :authentications,
            :connect,
+           :endpoints,
            :verify_credentials,
            :with_provider_connection,
            :to => :provider
