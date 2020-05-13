@@ -13,9 +13,13 @@ class ManageIQ::Providers::Foreman::ConfigurationManager < ManageIQ::Providers::
            :authentications,
            :connect,
            :endpoints,
+           :url,
+           :url=,
            :verify_credentials,
            :with_provider_connection,
            :to => :provider
+
+  belongs_to :provider, :autosave => true
 
   class << self
     delegate :params_for_create,
@@ -31,11 +35,25 @@ class ManageIQ::Providers::Foreman::ConfigurationManager < ManageIQ::Providers::
     @description ||= "Foreman Configuration".freeze
   end
 
+  def provider
+    super || ensure_provider
+  end
+
   def image_name
     "foreman_configuration"
   end
 
   def self.display_name(number = 1)
     n_('Configuration Manager (Foreman)', 'Configuration Managers (Foreman)', number)
+  end
+
+  def ensure_provider
+    build_provider
+
+    provider.configuration_manager = self
+    provider.name = name
+    provider.zone = zone
+
+    provider
   end
 end
