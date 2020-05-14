@@ -19,7 +19,7 @@ class ManageIQ::Providers::Foreman::ConfigurationManager < ManageIQ::Providers::
            :with_provider_connection,
            :to => :provider
 
-  belongs_to :provider, :autosave => true
+  belongs_to :provider, :autosave => true, :dependent => :destroy
 
   class << self
     delegate :params_for_create,
