@@ -21,6 +21,8 @@ class ManageIQ::Providers::Foreman::ConfigurationManager < ManageIQ::Providers::
 
   belongs_to :provider, :autosave => true, :dependent => :destroy
 
+  before_save :ensure_provider_name_and_zone
+
   class << self
     delegate :params_for_create,
              :verify_credentials,
@@ -55,5 +57,10 @@ class ManageIQ::Providers::Foreman::ConfigurationManager < ManageIQ::Providers::
     provider.zone = zone
 
     provider
+  end
+
+  def ensure_provider_name_and_zone
+    provider.name = name.split(" Configuration Manager").first
+    provider.zone = zone
   end
 end
