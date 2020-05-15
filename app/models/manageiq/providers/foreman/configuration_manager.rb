@@ -60,7 +60,7 @@ class ManageIQ::Providers::Foreman::ConfigurationManager < ManageIQ::Providers::
   end
 
   def ensure_provider_name_and_zone
-    provider.name = name.split(" Configuration Manager").first
+    provider.name = name.sub(/ Configuration Manager$/, '')
     provider.zone = zone
   end
 end

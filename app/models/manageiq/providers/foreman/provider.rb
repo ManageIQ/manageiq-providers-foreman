@@ -157,11 +157,11 @@ class ManageIQ::Providers::Foreman::Provider < ::Provider
 
   def ensure_managers
     build_provisioning_manager unless provisioning_manager
-    provisioning_manager.name    = "#{name} Provisioning Manager"
+    provisioning_manager.name     = "#{name} Provisioning Manager" unless name.end_with?(" Provisioning Manager")
     provisioning_manager.provider = self
 
     build_configuration_manager unless configuration_manager
-    configuration_manager.name    = "#{name} Configuration Manager"
+    configuration_manager.name     = "#{name} Configuration Manager" unless name.end_with?(" Configuration Manager")
     configuration_manager.provider = self
 
     if zone_id_changed?
