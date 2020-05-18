@@ -49,6 +49,8 @@ class ManageIQ::Providers::Foreman::ConfigurationManager < ManageIQ::Providers::
     n_('Configuration Manager (Foreman)', 'Configuration Managers (Foreman)', number)
   end
 
+  private
+
   def ensure_provider
     build_provider
 
