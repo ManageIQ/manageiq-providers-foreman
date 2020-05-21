@@ -31,35 +31,50 @@ class ManageIQ::Providers::Foreman::Provider < ::Provider
 
   def self.params_for_create
     @params_for_create ||= {
-      :title  => "Configure #{description}",
       :fields => [
         {
-          :component  => "text-field",
-          :name       => "endpoints.default.base_url",
-          :label      => "URL",
-          :isRequired => true,
-          :validate   => [{:type => "required-validator"}]
+          :component => 'sub-form',
+          :name      => 'endpoints-subform',
+          :title     => _("Endpoint"),
+          :fields    => [
+            {
+              :component              => 'validate-provider-credentials',
+              :name                   => 'authentications.default.valid',
+              :skipSubmit             => true,
+              :validationDependencies => %w[type zone_id],
+              :fields                 => [
+                {
+                  :component  => "text-field",
+                  :name       => "endpoints.default.url",
+                  :label      => _("URL"),
+                  :isRequired => true,
+                  :validate   => [{:type => "required-validator"}]
+                },
+                {
+                  :component => "checkbox",
+                  :name      => "endpoints.default.verify_ssl",
+                  :label     => _("Verify Peer Certificate")
+                },
+                {
+                  :component  => "text-field",
+                  :name       => "authentications.default.userid",
+                  :label      => _("Username"),
+                  :helperText => _("Should have privileged access, such as root or administrator."),
+                  :isRequired => true,
+                  :validate   => [{:type => "required-validator"}]
+                },
+                {
+                  :component  => "password-field",
+                  :name       => "authentications.default.password",
+                  :label      => _("Password"),
+                  :type       => "password",
+                  :isRequired => true,
+                  :validate   => [{:type => "required-validator"}]
+                },
+              ],
+            },
+          ],
         },
-        {
-          :component  => "text-field",
-          :name       => "endpoints.default.username",
-          :label      => "User",
-          :isRequired => true,
-          :validate   => [{:type => "required-validator"}]
-        },
-        {
-          :component  => "text-field",
-          :name       => "endpoints.default.password",
-          :label      => "Password",
-          :type       => "password",
-          :isRequired => true,
-          :validate   => [{:type => "required-validator"}]
-        },
-        {
-          :component => "checkbox",
-          :name      => "endpoints.default.verify_ssl",
-          :label     => "Verify SSL"
-        }
       ]
     }.freeze
   end
@@ -68,18 +83,24 @@ class ManageIQ::Providers::Foreman::Provider < ::Provider
   # args: {
   #  "endpoints" => {
   #    "default" => {
-  #      "base_url" => nil,
-  #      "username" => nil,
-  #      "password" => nil,
-  #      "verify_ssl" => nil
-  #    }
-  #  }
+  #       "url" => nil,
+  #       "verify_ssl" => nil
+  #    },
+  #  },
+  #  "authentications" => {
+  #     "default" => {
+  #       "userid" => nil,
+  #       "password" => nil,
+  #     }
+  #   }
   # }
   def self.verify_credentials(args)
-    default_endpoint = args.dig("endpoints", "default")
-    base_url, username, password, verify_ssl = default_endpoint&.values_at("base_url", "username", "password", "verify_ssl")
+    default_authentication = args.dig("authentications", "default")
+    base_url = args.dig("endpoints", "default", "url")
+    verify_ssl = args.dig("endpoints", "default", "verify_ssl")
+    userid, password = default_authentication&.values_at("userid", "password")
     verify_ssl = verify_ssl ? OpenSSL::SSL::VERIFY_PEER : OpenSSL::SSL::VERIFY_NONE
-    !!raw_connect(base_url, username, password, verify_ssl).verify?
+    !!raw_connect(base_url, userid, password, verify_ssl).verify?
   end
 
   def self.raw_connect(base_url, username, password, verify_ssl)
