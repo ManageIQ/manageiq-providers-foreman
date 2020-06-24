@@ -5,8 +5,10 @@ class ManageIQ::Providers::Foreman::ProvisioningManager < ManageIQ::Providers::P
            :authentication_status,
            :authentication_status_ok?,
            :authentications,
+           :authentications=,
            :connect,
            :endpoints,
+           :endpoints=,
            :verify_credentials,
            :with_provider_connection,
            :to => :provider
