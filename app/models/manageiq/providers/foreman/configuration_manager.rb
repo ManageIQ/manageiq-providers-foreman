@@ -21,8 +21,6 @@ class ManageIQ::Providers::Foreman::ConfigurationManager < ManageIQ::Providers::
 
   belongs_to :provider, :autosave => true, :dependent => :destroy
 
-  before_save :ensure_provider_name_and_zone
-
   class << self
     delegate :params_for_create,
              :verify_credentials,
@@ -41,6 +39,12 @@ class ManageIQ::Providers::Foreman::ConfigurationManager < ManageIQ::Providers::
     super || ensure_provider
   end
 
+  def name
+    "#{provider.name} Configuration Manager"
+  end
+
+  delegate :name=, :zone, :zone=, :zone_id=, :to => :provider
+
   def image_name
     "foreman_configuration"
   end
@@ -52,17 +56,6 @@ class ManageIQ::Providers::Foreman::ConfigurationManager < ManageIQ::Providers::
   private
 
   def ensure_provider
-    build_provider
-
-    provider.configuration_manager = self
-    provider.name = name
-    provider.zone = zone
-
-    provider
-  end
-
-  def ensure_provider_name_and_zone
-    provider.name = name.sub(/ Configuration Manager$/, '')
-    provider.zone = zone
+    build_provider.tap { |p| p.configuration_manager = self }
   end
 end
