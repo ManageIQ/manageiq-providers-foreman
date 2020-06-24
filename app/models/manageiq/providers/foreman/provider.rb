@@ -153,6 +153,10 @@ class ManageIQ::Providers::Foreman::Provider < ::Provider
     raise MiqException::MiqInvalidCredentialsError, err.message, err.backtrace
   end
 
+  def name=(n)
+    super(n.sub(/ (Configuration|Provisioning) Manager$/, ''))
+  end
+
   private
 
   def ensure_managers
