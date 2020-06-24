@@ -43,7 +43,7 @@ class ManageIQ::Providers::Foreman::ConfigurationManager < ManageIQ::Providers::
     "#{provider.name} Configuration Manager"
   end
 
-  delegate :name=, :zone, :zone=, :zone_id=, :to => :provider
+  delegate :name=, :zone, :zone=, :zone_id, :zone_id=, :to => :provider
 
   def image_name
     "foreman_configuration"

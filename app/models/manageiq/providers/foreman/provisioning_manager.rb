@@ -40,7 +40,7 @@ class ManageIQ::Providers::Foreman::ProvisioningManager < ManageIQ::Providers::P
     "#{provider.name} Provisioning Manager"
   end
 
-  delegate :name=, :zone, :zone=, :zone_id=, :to => :provider
+  delegate :name=, :zone, :zone=, :zone_id, :zone_id=, :to => :provider
 
   private
 
