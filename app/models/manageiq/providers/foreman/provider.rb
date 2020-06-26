@@ -51,9 +51,21 @@ class ManageIQ::Providers::Foreman::Provider < ::Provider
                   :validate   => [{:type => "required-validator"}]
                 },
                 {
-                  :component => "checkbox",
-                  :name      => "endpoints.default.verify_ssl",
-                  :label     => _("Verify Peer Certificate")
+                  :component    => "select-field",
+                  :name         => "endpoints.default.verify_ssl",
+                  :label        => _("SSL verification"),
+                  :isRequired   => true,
+                  :initialValue => OpenSSL::SSL::VERIFY_PEER,
+                  :options      => [
+                    {
+                      :label => _('Do not verify'),
+                      :value => OpenSSL::SSL::VERIFY_NONE,
+                    },
+                    {
+                      :label => _('Verify'),
+                      :value => OpenSSL::SSL::VERIFY_PEER,
+                    },
+                  ]
                 },
                 {
                   :component  => "text-field",
@@ -99,7 +111,6 @@ class ManageIQ::Providers::Foreman::Provider < ::Provider
     base_url = args.dig("endpoints", "default", "url")
     verify_ssl = args.dig("endpoints", "default", "verify_ssl")
     userid, password = default_authentication&.values_at("userid", "password")
-    verify_ssl = verify_ssl ? OpenSSL::SSL::VERIFY_PEER : OpenSSL::SSL::VERIFY_NONE
     !!raw_connect(base_url, userid, password, verify_ssl).verify?
   end
 
