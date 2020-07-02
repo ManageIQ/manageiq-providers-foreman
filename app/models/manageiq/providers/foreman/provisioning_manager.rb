@@ -5,8 +5,10 @@ class ManageIQ::Providers::Foreman::ProvisioningManager < ManageIQ::Providers::P
            :authentication_status,
            :authentication_status_ok?,
            :authentications,
+           :authentications=,
            :connect,
            :endpoints,
+           :endpoints=,
            :verify_credentials,
            :with_provider_connection,
            :to => :provider
@@ -30,5 +32,21 @@ class ManageIQ::Providers::Foreman::ProvisioningManager < ManageIQ::Providers::P
 
   def self.supported_for_create?
     false
+  end
+
+  def provider
+    super || ensure_provider
+  end
+
+  def name
+    "#{provider.name} Provisioning Manager"
+  end
+
+  delegate :name=, :zone, :zone=, :zone_id, :zone_id=, :to => :provider
+
+  private
+
+  def ensure_provider
+    build_provider.tap { |p| p.provisioning_manager = self }
   end
 end

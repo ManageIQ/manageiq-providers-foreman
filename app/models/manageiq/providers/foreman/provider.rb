@@ -2,12 +2,10 @@ class ManageIQ::Providers::Foreman::Provider < ::Provider
   has_one :configuration_manager,
           :foreign_key => "provider_id",
           :class_name  => "ManageIQ::Providers::Foreman::ConfigurationManager",
-          :dependent   => :destroy,
           :autosave    => true
   has_one :provisioning_manager,
           :foreign_key => "provider_id",
           :class_name  => "ManageIQ::Providers::Foreman::ProvisioningManager",
-          :dependent   => :destroy,
           :autosave    => true
 
   has_many :endpoints, :as => :resource, :dependent => :destroy, :autosave => true
@@ -153,20 +151,22 @@ class ManageIQ::Providers::Foreman::Provider < ::Provider
     raise MiqException::MiqInvalidCredentialsError, err.message, err.backtrace
   end
 
+  def name=(val)
+    super(val.sub(/ (Configuration|Provisioning) Manager$/, ''))
+  end
+
   private
 
   def ensure_managers
     build_provisioning_manager unless provisioning_manager
-    provisioning_manager.name    = "#{name} Provisioning Manager"
+    provisioning_manager.provider = self
 
     build_configuration_manager unless configuration_manager
-    configuration_manager.name    = "#{name} Configuration Manager"
+    configuration_manager.provider = self
 
     if zone_id_changed?
-      provisioning_manager.enabled = Zone.maintenance_zone&.id != zone_id
-      provisioning_manager.zone_id = zone_id
+      provisioning_manager.enabled  = Zone.maintenance_zone&.id != zone_id
       configuration_manager.enabled = Zone.maintenance_zone&.id != zone_id
-      configuration_manager.zone_id = zone_id
     end
   end
 
