@@ -1,9 +1,8 @@
-# manageiq-providers-foreman
+# ManageIQ::Providers::Foreman
 
-[![Gem Version](https://badge.fury.io/rb/manageiq-providers-foreman.svg)](http://badge.fury.io/rb/manageiq-providers-foreman)
 [![Build Status](https://travis-ci.com/ManageIQ/manageiq-providers-foreman.svg?branch=master)](https://travis-ci.com/ManageIQ/manageiq-providers-foreman)
-[![Code Climate](https://codeclimate.com/github/ManageIQ/manageiq-providers-foreman.svg)](https://codeclimate.com/github/ManageIQ/manageiq-providers-foreman)
-[![Test Coverage](https://codeclimate.com/github/ManageIQ/manageiq-providers-foreman/badges/coverage.svg)](https://codeclimate.com/github/ManageIQ/manageiq-providers-foreman/coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/975601bbfb95b8017892/maintainability)](https://codeclimate.com/github/ManageIQ/manageiq-providers-foreman/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/975601bbfb95b8017892/test_coverage)](https://codeclimate.com/github/ManageIQ/manageiq-providers-foreman/test_coverage)
 [![Security](https://hakiri.io/github/ManageIQ/manageiq-providers-foreman/master.svg)](https://hakiri.io/github/ManageIQ/manageiq-providers-foreman/master)
 
 [![Chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ManageIQ/manageiq-providers-foreman?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -12,7 +11,7 @@ ManageIQ plugin for the Foreman provider.
 
 ## Development
 
-See the section on pluggable providers in the [ManageIQ Developer Setup](http://manageiq.org/docs/guides/developer_setup)
+See the section on plugins in the [ManageIQ Developer Setup](http://manageiq.org/docs/guides/developer_setup/plugins)
 
 For quick local setup run `bin/setup`, which will clone the core ManageIQ repository under the *spec* directory and setup necessary config files. If you have already cloned it, you can run `bin/update` to bring the core ManageIQ code up to date.
 
