@@ -125,7 +125,7 @@ class ManageIQ::Providers::Foreman::Provider < ::Provider
     ForemanApiClient::Connection.new(
       :base_url   => base_url,
       :username   => username,
-      :password   => MiqPassword.try_decrypt(password),
+      :password   => ManageIQ::Password.try_decrypt(password),
       :timeout    => 100,
       :verify_ssl => verify_ssl
     )
