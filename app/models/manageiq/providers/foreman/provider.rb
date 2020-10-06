@@ -172,7 +172,9 @@ class ManageIQ::Providers::Foreman::Provider < ::Provider
     configuration_manager.provider = self
 
     if zone_id_changed?
+      provisioning_manager.zone     = zone
       provisioning_manager.enabled  = Zone.maintenance_zone&.id != zone_id
+      configuration_manager.zone    = zone
       configuration_manager.enabled = Zone.maintenance_zone&.id != zone_id
     end
   end
