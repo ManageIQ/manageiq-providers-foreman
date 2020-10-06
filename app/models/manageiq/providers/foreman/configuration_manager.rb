@@ -15,6 +15,7 @@ class ManageIQ::Providers::Foreman::ConfigurationManager < ManageIQ::Providers::
            :connect,
            :endpoints,
            :endpoints=,
+           :name=,
            :url,
            :url=,
            :verify_credentials,
@@ -22,6 +23,7 @@ class ManageIQ::Providers::Foreman::ConfigurationManager < ManageIQ::Providers::
            :to => :provider
 
   belongs_to :provider, :autosave => true, :dependent => :destroy
+  before_validation :update_provider_zone
 
   class << self
     delegate :params_for_create,
@@ -37,6 +39,10 @@ class ManageIQ::Providers::Foreman::ConfigurationManager < ManageIQ::Providers::
     @description ||= "Foreman Configuration".freeze
   end
 
+  def update_provider_zone
+    provider.zone = zone if zone_id_changed?
+  end
+
   def provider
     super || ensure_provider
   end
@@ -44,8 +50,6 @@ class ManageIQ::Providers::Foreman::ConfigurationManager < ManageIQ::Providers::
   def name
     "#{provider.name} Configuration Manager"
   end
-
-  delegate :name=, :zone, :zone=, :zone_id, :zone_id=, :to => :provider
 
   def image_name
     "foreman_configuration"
@@ -58,6 +62,6 @@ class ManageIQ::Providers::Foreman::ConfigurationManager < ManageIQ::Providers::
   private
 
   def ensure_provider
-    build_provider.tap { |p| p.configuration_manager = self }
+    build_provider(:configuration_manager => self, :zone => zone)
   end
 end
