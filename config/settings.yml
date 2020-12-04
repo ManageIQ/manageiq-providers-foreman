@@ -3,9 +3,20 @@
     :blacklisted_event_names: []
     :event_handling:
       :event_groups:
+:ems_refresh:
+  :foreman_configuration:
+    :refresh_interval: 15.minutes
+  :foreman_provisioning:
+    :refresh_interval: 1.hour
 :http_proxy:
   :foreman:
     :host:
     :password:
     :port:
     :user:
+:workers:
+  :worker_base:
+    :queue_worker_base:
+      :ems_refresh_worker:
+        :ems_refresh_worker_foreman_configuration: {}
+        :ems_refresh_worker_foreman_provisioning: {}
