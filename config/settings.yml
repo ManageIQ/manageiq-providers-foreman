@@ -15,8 +15,7 @@
     :port:
     :user:
 :workers:
-  :worker_base:
-    :queue_worker_base:
-      :ems_refresh_worker:
-        :ems_refresh_worker_foreman_configuration: {}
-        :ems_refresh_worker_foreman_provisioning: {}
+  :ems_refresh_worker_foreman_configuration:
+    :inherits_from: ems_refresh_worker
+  :ems_refresh_worker_foreman_provisioning:
+    :inherits_from: ems_refresh_worker
