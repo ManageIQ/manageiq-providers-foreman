@@ -1,9 +1,9 @@
 # ManageIQ::Providers::Foreman
 
-[![Build Status](https://travis-ci.com/ManageIQ/manageiq-providers-foreman.svg?branch=master)](https://travis-ci.com/ManageIQ/manageiq-providers-foreman)
+[![Build Status](https://travis-ci.com/ManageIQ/manageiq-providers-foreman.svg?branch=lasker)](https://travis-ci.com/ManageIQ/manageiq-providers-foreman)
 [![Maintainability](https://api.codeclimate.com/v1/badges/975601bbfb95b8017892/maintainability)](https://codeclimate.com/github/ManageIQ/manageiq-providers-foreman/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/975601bbfb95b8017892/test_coverage)](https://codeclimate.com/github/ManageIQ/manageiq-providers-foreman/test_coverage)
-[![Security](https://hakiri.io/github/ManageIQ/manageiq-providers-foreman/master.svg)](https://hakiri.io/github/ManageIQ/manageiq-providers-foreman/master)
+[![Security](https://hakiri.io/github/ManageIQ/manageiq-providers-foreman/lasker.svg)](https://hakiri.io/github/ManageIQ/manageiq-providers-foreman/lasker)
 
 [![Chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ManageIQ/manageiq-providers-foreman?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
