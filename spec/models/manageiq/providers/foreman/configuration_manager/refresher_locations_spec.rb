@@ -12,7 +12,7 @@ describe ManageIQ::Providers::Foreman::ConfigurationManager::Refresher do
     _guid, _server, zone = EvmSpecHelper.create_guid_miq_server_zone
     FactoryBot.create(:provider_foreman,
                        :zone       => zone,
-                       :url        => "example.com",
+                       :url        => Rails.application.secrets.foreman[:url],
                        :verify_ssl => false,
                       )
   end
