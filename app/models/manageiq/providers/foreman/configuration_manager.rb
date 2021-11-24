@@ -31,6 +31,8 @@ class ManageIQ::Providers::Foreman::ConfigurationManager < ManageIQ::Providers::
              :to => ManageIQ::Providers::Foreman::Provider
   end
 
+  supports :create
+
   def self.ems_type
     @ems_type ||= "foreman_configuration".freeze
   end
