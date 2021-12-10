@@ -30,10 +30,6 @@ class ManageIQ::Providers::Foreman::ProvisioningManager < ManageIQ::Providers::P
     @description ||= "Foreman Provisioning".freeze
   end
 
-  def self.supported_for_create?
-    false
-  end
-
   def provider
     super || ensure_provider
   end
