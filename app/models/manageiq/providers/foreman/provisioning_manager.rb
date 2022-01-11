@@ -1,4 +1,11 @@
 class ManageIQ::Providers::Foreman::ProvisioningManager < ManageIQ::Providers::ProvisioningManager
+  require_nested :ConfigurationArchitecture
+  require_nested :ConfigurationComputeProfile
+  require_nested :ConfigurationDomain
+  require_nested :ConfigurationEnvironment
+  require_nested :ConfigurationLocation
+  require_nested :ConfigurationOrganization
+  require_nested :ConfigurationRealm
   require_nested :Refresher
 
   delegate :authentication_check,
