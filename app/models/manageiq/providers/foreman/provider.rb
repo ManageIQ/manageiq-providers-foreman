@@ -28,7 +28,7 @@ class ManageIQ::Providers::Foreman::Provider < ::Provider
   end
 
   def self.params_for_create
-    @params_for_create ||= {
+    {
       :fields => [
         {
           :component => 'sub-form',
