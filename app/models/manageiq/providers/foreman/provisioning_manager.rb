@@ -1,6 +1,4 @@
 class ManageIQ::Providers::Foreman::ProvisioningManager < ManageIQ::Providers::ProvisioningManager
-  require_nested :Refresher
-
   delegate :authentication_check,
            :authentication_status,
            :authentication_status_ok?,
@@ -11,7 +9,12 @@ class ManageIQ::Providers::Foreman::ProvisioningManager < ManageIQ::Providers::P
            :endpoints=,
            :verify_credentials,
            :with_provider_connection,
+           :configuration_manager,
            :to => :provider
+
+  delegate :refresh,
+           :refresh_ems,
+           :to => :configuration_manager
 
   class << self
     delegate :params_for_create,
