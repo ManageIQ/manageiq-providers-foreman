@@ -6,8 +6,6 @@
 :ems_refresh:
   :foreman_configuration:
     :refresh_interval: 15.minutes
-  :foreman_provisioning:
-    :refresh_interval: 1.hour
 :http_proxy:
   :foreman:
     :host:
