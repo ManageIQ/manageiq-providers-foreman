@@ -10,7 +10,7 @@ class ManageIQ::Providers::Foreman::ConfigurationManager::ProvisionTask < MiqPro
     MiqProvisionConfiguredSystemRequest
   end
 
-  def deliver_to_automate
+  def deliver_to_automate(*)
     super("configured_system_provision", my_zone)
   end
 
