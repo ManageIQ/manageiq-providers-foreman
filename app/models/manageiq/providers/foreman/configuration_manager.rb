@@ -1,11 +1,4 @@
 class ManageIQ::Providers::Foreman::ConfigurationManager < ManageIQ::Providers::ConfigurationManager
-  require_nested :ConfigurationProfile
-  require_nested :ConfiguredSystem
-  require_nested :ProvisionTask
-  require_nested :ProvisionWorkflow
-  require_nested :Refresher
-  require_nested :RefreshWorker
-
   include ProcessTasksMixin
   delegate :authentication_check,
            :authentication_status,
