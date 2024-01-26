@@ -1,6 +1,6 @@
 class ManageIQ::Providers::Foreman::ConfigurationManager::ProvisionTask < MiqProvisionTask
-  include_concern 'OptionsHelper'
-  include_concern 'StateMachine'
+  include OptionsHelper
+  include StateMachine
 
   def model_class
     ManageIQ::Providers::Foreman::ConfigurationManager::ConfiguredSystem
