@@ -1,6 +1,6 @@
 class ManageIQ::Providers::Foreman::ConfigurationManager::ConfiguredSystem < ::ConfiguredSystem
   include ProviderObjectMixin
-  include_concern 'Placement'
+  include Placement
 
   belongs_to :configuration_profile,
              :class_name => 'ManageIQ::Providers::Foreman::ConfigurationManager::ConfigurationProfile'
