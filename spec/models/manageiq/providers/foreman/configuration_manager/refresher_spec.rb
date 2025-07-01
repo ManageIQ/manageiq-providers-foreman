@@ -8,7 +8,7 @@ describe ManageIQ::Providers::Foreman::ConfigurationManager::Refresher do
   context "#refresh" do
     let(:provider) do
       _guid, _server, zone = EvmSpecHelper.create_guid_miq_server_zone
-      FactoryBot.create(:provider_foreman, :zone => zone, :url => Rails.application.secrets.foreman[:url], :verify_ssl => false)
+      FactoryBot.create(:provider_foreman, :zone => zone, :url => VcrSecrets.foreman.url, :verify_ssl => false)
     end
 
     before do
