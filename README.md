@@ -1,6 +1,6 @@
 # ManageIQ::Providers::Foreman
 
-[![CI](https://github.com/ManageIQ/manageiq-providers-foreman/actions/workflows/ci.yaml/badge.svg?branch=spassky)](https://github.com/ManageIQ/manageiq-providers-foreman/actions/workflows/ci.yaml)
+[![CI](https://github.com/ManageIQ/manageiq-providers-foreman/actions/workflows/ci.yaml/badge.svg?branch=master)](https://github.com/ManageIQ/manageiq-providers-foreman/actions/workflows/ci.yaml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/975601bbfb95b8017892/maintainability)](https://codeclimate.com/github/ManageIQ/manageiq-providers-foreman/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/975601bbfb95b8017892/test_coverage)](https://codeclimate.com/github/ManageIQ/manageiq-providers-foreman/test_coverage)
 
