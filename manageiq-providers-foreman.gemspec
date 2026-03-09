@@ -20,6 +20,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "foreman_api_client", "~>1.1"
 
-  spec.add_development_dependency "manageiq-style"
+  spec.add_development_dependency "manageiq-style", "~> 1.5.0"
   spec.add_development_dependency "simplecov", ">= 0.21.2"
 end
